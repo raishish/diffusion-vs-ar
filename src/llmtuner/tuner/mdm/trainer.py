@@ -36,7 +36,20 @@ class CustomDiffusionTrainer(Trainer):
         optimizers: Tuple[torch.optim.Optimizer, torch.optim.lr_scheduler.LambdaLR] = (None, None),
         preprocess_logits_for_metrics: Optional[Callable[[torch.Tensor, torch.Tensor], torch.Tensor]] = None,
     ):
-        super().__init__(model, args, data_collator, train_dataset, eval_dataset, tokenizer, model_init, compute_metrics, callbacks, optimizers, preprocess_logits_for_metrics)
+        # super().__init__(model, args, data_collator, train_dataset, eval_dataset, tokenizer, model_init, compute_metrics, callbacks, optimizers, preprocess_logits_for_metrics)
+        super().__init__(
+            model=model,
+            args=args,
+            data_collator=data_collator,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset,
+            tokenizer=tokenizer,
+            model_init=model_init,
+            compute_metrics=compute_metrics,
+            callbacks=callbacks,
+            # optimizers=optimizers,
+            preprocess_logits_for_metrics=preprocess_logits_for_metrics,
+        )
         self.diff_args = diff_args
         print(self.diff_args)
 
@@ -44,7 +57,8 @@ class CustomDiffusionTrainer(Trainer):
         self,
         model: nn.Module,
         inputs: Dict[str, torch.Tensor],
-        return_outputs: Optional[bool] = False
+        return_outputs: Optional[bool] = False,
+        **kwargs  # Add this to accept extra arguments
     ) -> Union[torch.Tensor, Tuple[torch.Tensor, List[torch.Tensor]]]:
         r"""
         Computes diffusion loss.
